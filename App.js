@@ -20,7 +20,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 class TitleList extends React.Component{
 	render(){
-		return <h2 style={{paddingLeft: "0.75rem"}}>{this.props.title}</h2>;
+		return <h2 style={{paddingLeft: "0rem"}}>{this.props.title}</h2>;
 	}
 }
 
@@ -29,19 +29,19 @@ class OurCarousel extends React.Component{
 		return <Carousel
 					additionalTransfrom={0}
 					arrows
+					removeArrowOnDeviceType="mobile, tablet"
 					autoPlaySpeed={3000}
-					centerMode={false}
+					centerMode
 					className=""
 					containerClass="container"
 					dotListClass=""
-					draggable
+					draggable={false}
 					focusOnSelect={false}
 					infinite
 					itemClass=""
 					keyBoardControl
 					minimumTouchDrag={80}
-					partialVisible
-					renderButtonGroupOutside={true}
+					renderButtonGroupOutside={false}
 					renderDotsOutside={false}
 					responsive={{
 						desktop: {
@@ -50,29 +50,31 @@ class OurCarousel extends React.Component{
 								min: 1024
 							},
 							items: 5,
-							partialVisibilityGutter: 20
+							partialVisibilityGutter: 40,
+							slidesToSlide:5
 						},
 						mobile: {
-						  breakpoint: {
-							max: 464,
-							min: 0
-						  },
-						  items: 2,
-						  partialVisibilityGutter: 30
+							breakpoint: {
+								max: 464,
+								min: 0
+							},
+							items: 1,
+							partialVisibilityGutter: 30,
+							slidesToSlide:1
 						},
 						tablet: {
-						  breakpoint: {
-							max: 1024,
-							min: 464
-						  },
-						  items: 2,
-						  partialVisibilityGutter: 30
+							breakpoint: {
+								max: 1024,
+								min: 464
+							},
+							items: 2,
+							partialVisibilityGutter: 30,
+							slidesToSlide:1
 						}
 					}}
 					showDots={false}
 					sliderClass=""
-					slidesToSlide={5}
-					swipeable
+					swipeable  
 				>
 					{this.props.items}
 				</Carousel>;
@@ -117,8 +119,8 @@ class App extends React.Component{
 				<TitleList title = "Populares"/>
 				<OurCarousel 
 					items = {this.state.movies.filter(movies => movies.title.includes(this.state.filter)).map(movie =>
-						<Card style={{ width: '11rem' }}>
-							<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''/>
+						<Card>
+							<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
 						</Card>
 					)}
 				/>
