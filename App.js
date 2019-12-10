@@ -16,6 +16,8 @@ import CardColumns from 'react-bootstrap/CardColumns';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
+/*--------------------------------------------------------------------------------------*/
+
 class App extends React.Component{
     constructor() {
         super();
@@ -43,26 +45,68 @@ class App extends React.Component{
             filter: event.target.value
         });
     }
-
-    render() {
+	
+//render del carrousel con scroll horizontal
+	render() {
         return this.state.loading ?
 			<p>Loading...</p> :
 			<div>
-                <Form.Control type="text" className="mt-2 mb-5" placeholder="Filter..." onChange={this.filterChange} value={this.state.text} />
-				<CardColumns>
+				<Carousel
+					additionalTransfrom={0}
+					arrows
+					autoPlaySpeed={3000}
+					centerMode={false}
+					className=""
+					containerClass="container"
+					dotListClass=""
+					draggable
+					focusOnSelect={false}
+					infinite
+					itemClass=""
+					keyBoardControl
+					minimumTouchDrag={80}
+					partialVisible
+					renderButtonGroupOutside={false}
+					renderDotsOutside={false}
+					responsive={{
+						desktop: {
+							breakpoint: {
+								max: 3000,
+								min: 1024
+							},
+							items: 5,
+							partialVisibilityGutter: 20
+						},
+						mobile: {
+						  breakpoint: {
+							max: 464,
+							min: 0
+						  },
+						  items: 2,
+						  partialVisibilityGutter: 30
+						},
+						tablet: {
+						  breakpoint: {
+							max: 1024,
+							min: 464
+						  },
+						  items: 2,
+						  partialVisibilityGutter: 30
+						}
+					}}
+					showDots={false}
+					sliderClass=""
+					slidesToSlide={5}
+					swipeable
+				>
 					{this.state.movies.filter(movies => movies.title.includes(this.state.filter)).map(movie =>
-						<Card style={{ width: '18rem' }}>
-							//<Card.Img variant="top" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`} />
-							<Card.Body>
-								<Card.Title>{movie.title}</Card.Title>
-								<Card.Text>{movie.overview}</Card.Text>
-								<Button variant="outline-dark">Details</Button>
-							</Card.Body>
+						<Card style={{ width: '12rem' }}>
+							<Card.Img variant="top" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`} />
 						</Card>
 					)}
-				</CardColumns>
-            </div>;
-    }
+				</Carousel>	
+			</div>;
+	}
 }
 
 class FilterBox extends React.Component{
