@@ -12,6 +12,10 @@ import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/Card';
 import CardColumns from 'react-bootstrap/CardColumns';
 
+//https://www.npmjs.com/package/react-multi-carousel
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
 class App extends React.Component{
     constructor() {
         super();
@@ -48,7 +52,7 @@ class App extends React.Component{
 				<CardColumns>
 					{this.state.movies.filter(movies => movies.title.includes(this.state.filter)).map(movie =>
 						<Card style={{ width: '18rem' }}>
-							<Card.Img variant="top" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`} />
+							//<Card.Img variant="top" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`} />
 							<Card.Body>
 								<Card.Title>{movie.title}</Card.Title>
 								<Card.Text>{movie.overview}</Card.Text>
