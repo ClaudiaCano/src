@@ -24,41 +24,9 @@ class TitleList extends React.Component{
 	}
 }
 
-class App extends React.Component{
-    constructor() {
-        super();
-        this.state = {
-            movies: [],
-            loading: true,
-            filter: "",
-        }
-        this.filterChange = this.filterChange.bind(this);
-    }
-
-    componentDidMount() {
-        fetch("https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1")
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    movies: json.results,
-                    loading: false,
-                });
-            });
-    }
-
-    filterChange(event) {
-        this.setState({
-            filter: event.target.value
-        });
-    }
-	
-//render del carrousel con scroll horizontal
-	render() {
-        return this.state.loading ?
-			<p>Loading...</p> :
-			<div>
-				<TitleList title = "Populares"/>
-				<Carousel
+class OurCarousel extends React.Component{
+	render(){
+		return <Carousel
 					additionalTransfrom={0}
 					arrows
 					autoPlaySpeed={3000}
@@ -106,12 +74,54 @@ class App extends React.Component{
 					slidesToSlide={5}
 					swipeable
 				>
-					{this.state.movies.filter(movies => movies.title.includes(this.state.filter)).map(movie =>
+					{this.props.items}
+				</Carousel>;
+	}
+}
+
+/*--------------------------------------------------------------------------------------*/
+
+class App extends React.Component{
+    constructor() {
+        super();
+        this.state = {
+            movies: [],
+            loading: true,
+            filter: "",
+        }
+        this.filterChange = this.filterChange.bind(this);
+    }
+
+    componentDidMount() {
+        fetch("https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1")
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    movies: json.results,
+                    loading: false,
+                });
+            });
+    }
+
+    filterChange(event) {
+        this.setState({
+            filter: event.target.value
+        });
+    }
+	
+//render del carrousel con scroll horizontal
+	render() {
+        return this.state.loading ?
+			<p>Loading...</p> :
+			<div>
+				<TitleList title = "Populares"/>
+				<OurCarousel 
+					items = {this.state.movies.filter(movies => movies.title.includes(this.state.filter)).map(movie =>
 						<Card style={{ width: '11rem' }}>
-							<Card.Img src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`} />
+							<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''/>
 						</Card>
 					)}
-				</Carousel>	
+				/>
 			</div>;
 	}
 }
