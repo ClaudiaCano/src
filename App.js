@@ -18,6 +18,12 @@ import 'react-multi-carousel/lib/styles.css';
 
 /*--------------------------------------------------------------------------------------*/
 
+class TitleList extends React.Component{
+	render(){
+		return <h2 style={{paddingLeft: "0.75rem"}}>{this.props.title}</h2>;
+	}
+}
+
 class App extends React.Component{
     constructor() {
         super();
@@ -51,6 +57,7 @@ class App extends React.Component{
         return this.state.loading ?
 			<p>Loading...</p> :
 			<div>
+				<TitleList title = "Populares"/>
 				<Carousel
 					additionalTransfrom={0}
 					arrows
@@ -66,7 +73,7 @@ class App extends React.Component{
 					keyBoardControl
 					minimumTouchDrag={80}
 					partialVisible
-					renderButtonGroupOutside={false}
+					renderButtonGroupOutside={true}
 					renderDotsOutside={false}
 					responsive={{
 						desktop: {
@@ -100,8 +107,8 @@ class App extends React.Component{
 					swipeable
 				>
 					{this.state.movies.filter(movies => movies.title.includes(this.state.filter)).map(movie =>
-						<Card style={{ width: '12rem' }}>
-							<Card.Img variant="top" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`} />
+						<Card style={{ width: '11rem' }}>
+							<Card.Img src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`} />
 						</Card>
 					)}
 				</Carousel>	
