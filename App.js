@@ -18,12 +18,80 @@ import 'react-multi-carousel/lib/styles.css';
 
 /*--------------------------------------------------------------------------------------*/
 
+const urlCover = "https://api.themoviedb.org/3/find/tt8623904?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&external_source=imdb_id";
+const urlNew = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&year=2019";
+const urlAction = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28";
+const urlAdventure = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=12";
+const urlAnimation = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=16";
+const urlComedy = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=35";
+const urlCrime = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=80";
+const urlDrama = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=18";
+const urlFamily = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=10751";
+const urlFantasy = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=14";
+const urlHistory = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=36";
+const urlTerror = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=27";
+const urlMusical = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=10402";
+const urlMystery = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=9648";
+const urlRomance = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=10749";
+const urlSyfy = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=878";
+const urlThriller = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=53";
+const urlWar = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=10752";
+
+
+/*--------------------------------------------------------------------------------------*/
+
 class TitleList extends React.Component{
 	render(){
 		return <h2 style={{paddingLeft: "0rem"}}>{this.props.title}</h2>;
 	}
 }
-
+class CoverCarrousel extends React.Component{
+	render(){
+		return <Carousel
+					additionalTransfrom={0}	
+                    arrows={false}
+					className=""
+					containerClass="container"
+					dotListClass=""
+					draggable={false}
+					focusOnSelect={false}
+					infinite
+					itemClass=""
+					keyBoardControl
+					minimumTouchDrag={80}
+					renderButtonGroupOutside={false}
+					renderDotsOutside={false}
+					responsive={{
+						desktop: {
+							breakpoint: {
+								max: 3000,
+								min: 1024
+							},
+							items: 1,
+							
+						},
+						mobile: {
+							breakpoint: {
+								max: 464,
+								min: 0
+							},
+							items: 1,
+						},
+						tablet: {
+							breakpoint: {
+								max: 1024,
+								min: 464
+							},
+							items: 1,
+						}
+					}}
+					showDots={false}
+					sliderClass="" 
+				>
+					{this.props.items}
+				</Carousel>;
+	}
+}
 class OurCarousel extends React.Component{
 	render(){
 		return <Carousel
@@ -80,6 +148,62 @@ class OurCarousel extends React.Component{
 				</Carousel>;
 	}
 }
+/*
+class MovieList extends React.Component{
+    render (){
+        return <div><TitleList title = {this.props.title}/>
+            <OurCarousel 
+                items = {this.state.{this.props.genre}.filter({this.props.genre} => {this.props.genre}.title.includes(this.state.filter)).map(movie => 
+                    <Card>
+                         <Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+                    </Card>
+                )}
+            /></div>;
+    }
+}
+*/
+
+/*--------------------------------------------------------------------------------------*/
+//imagen de fondo  src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path}
+
+class Cover extends React.Component{
+    constructor() {
+        super();
+        this.state = {
+            movieCover: [],
+            loading: true,
+        }
+    }
+
+    
+    componentDidMount() {
+        fetch(urlCover)
+
+      .then(resCover => resCover.json())
+      .then(json =>{
+          this.setState({
+              movieCover: json.movie_results,
+              loading: false,
+          });
+      });
+}
+    
+	render() {
+        return this.state.loading ?
+			<p>Loading...</p> :
+			<div>
+                <CoverCarrousel
+                    items = {this.state.movieCover.map(movie =>
+                        <div>
+                            <img className=" w-100" src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path} alt=""/>
+                            <h3>{movie.title}</h3>
+                        </div>
+                    )}
+                />
+			</div>;
+	}
+}
+
 
 /*--------------------------------------------------------------------------------------*/
 
@@ -87,23 +211,57 @@ class App extends React.Component{
     constructor() {
         super();
         this.state = {
-            movies: [],
+            movieCover: [], moviesNew: [], moviesAction: [], moviesAdventure: [], moviesAnimation: [], moviesComedy: [], moviesCrime: [], moviesDrama: [], moviesFamily: [], moviesFantasy: [], moviesHistory: [], moviesTerror: [], moviesMusical: [], moviesMystery: [], moviesRomance: [], moviesSyfy: [], moviesThriller: [], moviesWar: [],
             loading: true,
             filter: "",
         }
         this.filterChange = this.filterChange.bind(this);
     }
 
+    
     componentDidMount() {
-        fetch("https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1")
+    Promise.all([
+        fetch(urlCover), fetch(urlNew), fetch(urlAction), fetch(urlAdventure), fetch(urlAnimation), fetch(urlComedy), fetch(urlCrime), fetch(urlDrama), fetch(urlFamily), fetch(urlFantasy), fetch(urlHistory), fetch(urlTerror), fetch(urlMusical), fetch(urlMystery), fetch(urlRomance), fetch(urlSyfy), fetch(urlThriller), fetch(urlWar)])
+
+      .then(([resCover, resNew, resAction, resAdventure, resAnimation, resComedy, resCrime, resDrama, resFamily, resFantasy, resHistory, resTerror, resMusical, resMystery, resRomance, resSyfy, resThriller, resWar]) => { 
+         return Promise.all([resCover.json(), resNew.json(), resAction.json(), resAdventure.json(), resAnimation.json(), resComedy.json(), resCrime.json(), resDrama.json(), resFamily.json(), resFantasy.json(), resHistory.json(), resTerror.json(), resMusical.json(), resMystery.json(), resRomance.json(), resSyfy.json(), resThriller.json(), resWar.json()]) 
+      })
+      .then(([resCover, resNew, resAction, resAdventure, resAnimation, resComedy, resCrime, resDrama, resFamily, resFantasy, resHistory, resTerror, resMusical, resMystery, resRomance, resSyfy, resThriller, resWar]) => {
+        this.setState({
+            movieCover: resCover.movie_results,
+            moviesNew: resNew.results,
+            moviesAction: resAction.results,
+            moviesAdventure: resAdventure.results,
+            moviesAnimation: resAnimation.results,
+            moviesComedy: resComedy.results,
+            moviesCrime: resCrime.results,
+            moviesDrama: resDrama.results,
+            moviesFamily: resFamily.results,
+            moviesFantasy: resFantasy.results,
+            moviesHistory: resHistory.results,
+            moviesTerror: resTerror.results,
+            moviesMusical: resMusical.results,
+            moviesMystery: resMystery.results,
+            moviesRomance: resRomance.results,
+            moviesSyfy: resSyfy.results,
+            moviesThriller: resThriller.results,
+            moviesWar: resWar.results,
+            loading: false,
+        });
+      });
+}
+   /* 
+    componentDidMount() {
+        fetch("https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28")
             .then(response => response.json())
             .then(json => {
                 this.setState({
-                    movies: json.results,
+                    moviesAction: json.results,
                     loading: false,
                 });
             });
     }
+    */
 
     filterChange(event) {
         this.setState({
@@ -116,9 +274,17 @@ class App extends React.Component{
         return this.state.loading ?
 			<p>Loading...</p> :
 			<div>
-				<TitleList title = "Populares"/>
+            <TitleList title = "Novedades"/>
 				<OurCarousel 
-					items = {this.state.movies.filter(movies => movies.title.includes(this.state.filter)).map(movie =>
+					items = {this.state.moviesNew.filter(moviesNew => moviesNew.title.includes(this.state.filter)).map(movie =>
+						<Card>
+							<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+						</Card>
+					)}
+				/>
+				<TitleList title = "Acción"/>
+				<OurCarousel 
+					items = {this.state.moviesAction.filter(moviesAction => moviesAction.title.includes(this.state.filter)).map(movie =>
 						<Card>
 							<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
 						</Card>
@@ -157,5 +323,5 @@ class FilterBox extends React.Component{
     }
 }
 
-
 export default App;
+export {Cover};
