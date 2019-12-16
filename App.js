@@ -16,6 +16,14 @@ import CardColumns from 'react-bootstrap/CardColumns';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
+// https://reacttraining.com/react-router/web/guides/quick-start
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 /*--------------------------------------------------------------------------------------*/
 
 const urlCover = "https://api.themoviedb.org/3/find/tt8623904?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&external_source=imdb_id";
