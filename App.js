@@ -21,7 +21,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useParams,
+  useHistory,
+  useLocation
 } from "react-router-dom";
 
 /*--------------------------------------------------------------------------------------*/
@@ -200,17 +203,26 @@ class Cover extends React.Component{
         return this.state.loading ?
 			<p>Loading...</p> :
 			<div>
-                <CoverCarrousel
+                {this.state.movieCover.map(movie =>
+                        <div>
+                            <div className = "Tint"></div>
+                            <img className = "Cover-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path} alt="" fluid={true}/>
+                            <h3 className = "Movie-title">{movie.title}</h3>
+                        </div>
+                )}
+			</div>;
+	}
+}
+        
+        /*<CoverCarrousel
                     items = {this.state.movieCover.map(movie =>
                         <div>
-                            <img className=" w-100" src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path} alt=""/>
+                            <img className="w-100" src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path} alt=""/>
                             <h3>{movie.title}</h3>
                         </div>
                     )}
                 />
-			</div>;
-	}
-}
+        */
 
 
 /*--------------------------------------------------------------------------------------*/
@@ -281,15 +293,25 @@ class App extends React.Component{
 	render() {
         return this.state.loading ?
 			<p>Loading...</p> :
+            <Router>
 			<div>
-            <TitleList title = "Novedades"/>
+                <TitleList title = "Novedades"/>
 				<OurCarousel 
 					items = {this.state.moviesNew.filter(moviesNew => moviesNew.title.includes(this.state.filter)).map(movie =>
-						<Card>
-							<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
-						</Card>
+                        <div>
+                            <Link to={'/movie/' + movie.id}>	
+                                <Card>
+                                    <Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+                                </Card>
+                            </Link>	
+                        </div>
 					)}
 				/>
+        
+                <Switch>
+                  <Route path="/movie/:id" children={<Child />} />
+                </Switch>
+        
 				<TitleList title = "Acción"/>
 				<OurCarousel 
 					items = {this.state.moviesAction.filter(moviesAction => moviesAction.title.includes(this.state.filter)).map(movie =>
@@ -298,7 +320,8 @@ class App extends React.Component{
 						</Card>
 					)}
 				/>
-			</div>;
+			</div>
+        </Router>;
 	}
 }
 
@@ -329,6 +352,66 @@ class FilterBox extends React.Component{
                 value={this.state.text} />
         </div>
     }
+}
+
+/*export default function AppRouter() {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/users">Users</Link>
+            </li>
+          </ul>
+        </nav>
+
+        { A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. }
+        <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <h2>About</h2>;
+}
+
+function Users() {
+  return <h2>Users</h2>;
+}*/
+
+function Child() {
+  // We can use the `useParams` hook here to access
+  // the dynamic pieces of the URL.
+  let { id } = useParams();
+
+  return (
+    <div>
+      <h3>ID: {id}</h3>
+    </div>
+  );
 }
 
 export default App;
