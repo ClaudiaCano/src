@@ -11,6 +11,9 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/Card';
 import CardColumns from 'react-bootstrap/CardColumns';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import FormControl from 'react-bootstrap/FormControl';
 
 //https://www.npmjs.com/package/react-multi-carousel
 import Carousel from 'react-multi-carousel';
@@ -53,7 +56,7 @@ const urlWar = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc
 
 class TitleList extends React.Component{
 	render(){
-		return <h2 style={{paddingLeft: "0rem"}}>{this.props.title}</h2>;
+		return <h2>{this.props.title}</h2>;
 	}
 }
 class CoverCarrousel extends React.Component{
@@ -185,7 +188,6 @@ class Cover extends React.Component{
             loading: true,
         }
     }
-
     
     componentDidMount() {
         fetch(urlCover)
@@ -197,17 +199,16 @@ class Cover extends React.Component{
               loading: false,
           });
       });
-}
+    }
     
 	render() {
         return this.state.loading ?
 			<p>Loading...</p> :
-			<div>
+			<div className = "w-screen">
                 {this.state.movieCover.map(movie =>
                         <div>
-                            <div className = "Tint"></div>
+                            <div></div>
                             <img className = "Cover-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path} alt="" fluid={true}/>
-                            <h3 className = "Movie-title">{movie.title}</h3>
                         </div>
                 )}
 			</div>;
@@ -224,55 +225,55 @@ class Cover extends React.Component{
                 />
         */
 
+        // <h3 className = "Movie-title">{movie.title}</h3>
+
 
 /*--------------------------------------------------------------------------------------*/
 
-export default function ModalGalleryExample() {
+function App() {
   return (
-    <Router>
-      <ModalSwitch />
-    </Router>
+      <div>
+        <Navbar id = "navbargrad" scrolling dark expand = "md" fixed="top" variant="dark">
+			<Navbar.Brand href="#home">MovieSearch</Navbar.Brand>
+			<Nav className="mr-auto">
+			</Nav>
+			<Form inline>
+			  <FormControl size = "sm" type="text" placeholder="Title" className="mr-sm-2 transparent-input" />
+			  <Button size = "sm" variant="outline-light">Search</Button>
+			</Form>
+        </Navbar>
+
+        <Router>
+        	<ModalSwitch />
+        </Router>
+      </div>
   );
 }
 
 function ModalSwitch() {
   let location = useLocation();
 
-  // This piece of state is set when one of the
-  // gallery links is clicked. The `background` state
-  // is the location that we were at when one of
-  // the gallery links was clicked. If it's there,
-  // use it as the location for the <Switch> so
-  // we show the gallery in the background, behind
-  // the modal.
-  let background = location.state && location.state.background;
-
   return (
     <div>
-      <Switch location={background || location}>
-        <Route exact path="/" children={<App />} />
+      <Switch location={location}>
+        <Route exact path="/" children={<Home />} />
         <Route path="/movie/:id" children={<Child />} />
       </Switch>
-
-      {/* Show the modal when a background page is set */}
-      {background && <Route path="/movie/:id" children={<Child />} />}
     </div>
   );
 }
 
-class App extends React.Component{
+class Home extends React.Component{
     constructor() {
         super();
         this.state = {
             movieCover: [], moviesNew: [], moviesAction: [], moviesAdventure: [], moviesAnimation: [], moviesComedy: [], moviesCrime: [], moviesDrama: [], moviesFamily: [], moviesFantasy: [], moviesHistory: [], moviesTerror: [], moviesMusical: [], moviesMystery: [], moviesRomance: [], moviesSyfy: [], moviesThriller: [], moviesWar: [],
             loading: true,
             filter: "",
-            backgroundd: false,
         }
         this.filterChange = this.filterChange.bind(this);
     }
 
-    
     componentDidMount() {
     Promise.all([
         fetch(urlCover), fetch(urlNew), fetch(urlAction), fetch(urlAdventure), fetch(urlAnimation), fetch(urlComedy), fetch(urlCrime), fetch(urlDrama), fetch(urlFamily), fetch(urlFantasy), fetch(urlHistory), fetch(urlTerror), fetch(urlMusical), fetch(urlMystery), fetch(urlRomance), fetch(urlSyfy), fetch(urlThriller), fetch(urlWar)])
@@ -322,133 +323,42 @@ class App extends React.Component{
             filter: event.target.value
         });
     }
-    
-getChildContext() {
-    return {
-      location: this.props.location
-    }
-  }
 	
 //render del carrousel con scroll horizontal
 	render() {
         return this.state.loading ?
 			<p>Loading...</p> :
-            <Router>
 			<div>
-                <TitleList title = "Novedades"/>
-				<OurCarousel 
-					items = {this.state.moviesNew.filter(moviesNew => moviesNew.title.includes(this.state.filter)).map(movie =>
-                        <div>
-<Link
-        
-  to={'/movie/' + movie.id}
-            component = {App}>
+                <Cover />
+            
+                <div className = "container">
+                    <div className = "row mt-5 mb-3">
+                        <TitleList title = "Novedades"/>
+                        <OurCarousel 
+                            items = {this.state.moviesNew.filter(moviesNew => moviesNew.title.includes(this.state.filter)).map(movie =>
+                                <div>
+                                    <Link to={'/movie/' + movie.id}>
+                                        <Card>
+                                            <Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+                                        </Card>
+                                    </Link>
+                                </div>
+                            )}
+                        />
+
+                        <TitleList title = "Acción"/>
+                        <OurCarousel 
+                            items = {this.state.moviesAction.filter(moviesAction => moviesAction.title.includes(this.state.filter)).map(movie =>
                                 <Card>
                                     <Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
                                 </Card>
-                            </Link>
-                        </div>
-					)}
-				/>
-        
-				<TitleList title = "Acción"/>
-				<OurCarousel 
-					items = {this.state.moviesAction.filter(moviesAction => moviesAction.title.includes(this.state.filter)).map(movie =>
-						<Card>
-							<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
-						</Card>
-					)}
-				/>
-			</div>
-        </Router>;
+                            )}
+                        />
+                    </div>
+                </div>
+			</div>;
 	}
 }
-
-//<Link to={'/movie/' + movie.id}>	
-                                   /* <Link
-                              key={movie.id}
-                              to={{
-                                pathname: `/movie/${movie.id}`,
-                                state: { background: location }
-                              }}
-                            >*/
-
-class FilterBox extends React.Component{
-    constructor() {
-        super();
-        this.state = {
-            text: "this is the filter",
-        }
-        // (3. And the binding!!)
-        this.filterChange = this.filterChange.bind(this);
-    }
-
-    // 2: Method that updates the state by using the new value
-    //    in the <input> box.
-    filterChange(event) {
-        this.setState({
-            text: event.target.value
-        });
-    }
-
-    render() {
-        // 1: <input> with an attribute "value" taken from the
-        //    state of the component.
-        return <div>
-            Filter:
-            <input type="text" onChange={this.filterChange}
-                value={this.state.text} />
-        </div>
-    }
-}
-
-/*export default function AppRouter() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
-
-        { A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. }
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  );
-}
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
-}*/
 
 function Child() {
   // We can use the `useParams` hook here to access
@@ -462,5 +372,4 @@ function Child() {
   );
 }
 
-export {App};
-export {Cover};
+export default App;
