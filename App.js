@@ -24,7 +24,7 @@ import {
   Link,
   useParams,
   useHistory,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 
 /*--------------------------------------------------------------------------------------*/
@@ -227,6 +227,39 @@ class Cover extends React.Component{
 
 /*--------------------------------------------------------------------------------------*/
 
+export default function ModalGalleryExample() {
+  return (
+    <Router>
+      <ModalSwitch />
+    </Router>
+  );
+}
+
+function ModalSwitch() {
+  let location = useLocation();
+
+  // This piece of state is set when one of the
+  // gallery links is clicked. The `background` state
+  // is the location that we were at when one of
+  // the gallery links was clicked. If it's there,
+  // use it as the location for the <Switch> so
+  // we show the gallery in the background, behind
+  // the modal.
+  let background = location.state && location.state.background;
+
+  return (
+    <div>
+      <Switch location={background || location}>
+        <Route exact path="/" children={<App />} />
+        <Route path="/movie/:id" children={<Child />} />
+      </Switch>
+
+      {/* Show the modal when a background page is set */}
+      {background && <Route path="/movie/:id" children={<Child />} />}
+    </div>
+  );
+}
+
 class App extends React.Component{
     constructor() {
         super();
@@ -234,6 +267,7 @@ class App extends React.Component{
             movieCover: [], moviesNew: [], moviesAction: [], moviesAdventure: [], moviesAnimation: [], moviesComedy: [], moviesCrime: [], moviesDrama: [], moviesFamily: [], moviesFantasy: [], moviesHistory: [], moviesTerror: [], moviesMusical: [], moviesMystery: [], moviesRomance: [], moviesSyfy: [], moviesThriller: [], moviesWar: [],
             loading: true,
             filter: "",
+            backgroundd: false,
         }
         this.filterChange = this.filterChange.bind(this);
     }
@@ -288,6 +322,12 @@ class App extends React.Component{
             filter: event.target.value
         });
     }
+    
+getChildContext() {
+    return {
+      location: this.props.location
+    }
+  }
 	
 //render del carrousel con scroll horizontal
 	render() {
@@ -299,18 +339,17 @@ class App extends React.Component{
 				<OurCarousel 
 					items = {this.state.moviesNew.filter(moviesNew => moviesNew.title.includes(this.state.filter)).map(movie =>
                         <div>
-                            <Link to={'/movie/' + movie.id}>	
+<Link
+        
+  to={'/movie/' + movie.id}
+            component = {App}>
                                 <Card>
                                     <Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
                                 </Card>
-                            </Link>	
+                            </Link>
                         </div>
 					)}
 				/>
-        
-                <Switch>
-                  <Route path="/movie/:id" children={<Child />} />
-                </Switch>
         
 				<TitleList title = "Acción"/>
 				<OurCarousel 
@@ -324,6 +363,15 @@ class App extends React.Component{
         </Router>;
 	}
 }
+
+//<Link to={'/movie/' + movie.id}>	
+                                   /* <Link
+                              key={movie.id}
+                              to={{
+                                pathname: `/movie/${movie.id}`,
+                                state: { background: location }
+                              }}
+                            >*/
 
 class FilterBox extends React.Component{
     constructor() {
@@ -414,5 +462,5 @@ function Child() {
   );
 }
 
-export default App;
+export {App};
 export {Cover};
