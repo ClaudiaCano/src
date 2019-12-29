@@ -162,20 +162,22 @@ class OurCarousel extends React.Component{
 				</Carousel>;
 	}
 }
-/*
-class MovieList extends React.Component{
-    render (){
-        return <div><TitleList title = {this.props.title}/>
+
+/*class MovieList extends React.Component{
+    render(){
+        return <div>
+			<TitleList title = {this.props.title}/>
+				
             <OurCarousel 
                 items = {this.state.{this.props.genre}.filter({this.props.genre} => {this.props.genre}.title.includes(this.state.filter)).map(movie => 
                     <Card>
                          <Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
                     </Card>
                 )}
-            /></div>;
+            />
+		</div>;
     }
-}
-*/
+}*/
 
 /*--------------------------------------------------------------------------------------*/
 //imagen de fondo  src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path}
@@ -332,29 +334,262 @@ class Home extends React.Component{
                 <Cover />
             
                 <div className = "container">
-                    <div className = "row mt-5 mb-3">
-                        <TitleList title = "Novedades"/>
-                        <OurCarousel 
-                            items = {this.state.moviesNew.filter(moviesNew => moviesNew.title.includes(this.state.filter)).map(movie =>
-                                <div>
-                                    <Link to={'/movie/' + movie.id}>
-                                        <Card>
-                                            <Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
-                                        </Card>
-                                    </Link>
-                                </div>
-                            )}
-                        />
-
-                        <TitleList title = "Acción"/>
-                        <OurCarousel 
-                            items = {this.state.moviesAction.filter(moviesAction => moviesAction.title.includes(this.state.filter)).map(movie =>
-                                <Card>
-                                    <Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
-                                </Card>
-                            )}
-                        />
+                    <div className = "row mt-5 mb-5">
+					
+						<TitleList title = "Novedades"/>
+							<OurCarousel 
+								items = {this.state.moviesNew.filter(moviesNew => moviesNew.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />
+					</div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Acción"/>
+							<OurCarousel 
+								items = {this.state.moviesAction.filter(moviesAction => moviesAction.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
                     </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Aventuras"/>
+							<OurCarousel 
+								items = {this.state.moviesAdventure.filter(moviesAdventure => moviesAdventure.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Animación"/>
+							<OurCarousel 
+								items = {this.state.moviesAnimation.filter(moviesAnimation => moviesAnimation.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Comedia"/>
+							<OurCarousel 
+								items = {this.state.moviesComedy.filter(moviesComedy => moviesComedy.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Crimen"/>
+							<OurCarousel 
+								items = {this.state.moviesCrime.filter(moviesCrime => moviesCrime.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+					
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Drama"/>
+							<OurCarousel 
+								items = {this.state.moviesDrama.filter(moviesDrama => moviesDrama.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Familia"/>
+							<OurCarousel 
+								items = {this.state.moviesFamily.filter(moviesFamily => moviesFamily.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Fantasía"/>
+							<OurCarousel 
+								items = {this.state.moviesFantasy.filter(moviesFantasy => moviesFantasy.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Historia"/>
+							<OurCarousel 
+								items = {this.state.moviesHistory.filter(moviesHistory => moviesHistory.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Terror"/>
+							<OurCarousel 
+								items = {this.state.moviesTerror.filter(moviesTerror => moviesTerror.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Musical"/>
+							<OurCarousel 
+								items = {this.state.moviesMusical.filter(moviesMusical => moviesMusical.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Misterio"/>
+							<OurCarousel 
+								items = {this.state.moviesMystery.filter(moviesMystery => moviesMystery.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Romance"/>
+							<OurCarousel 
+								items = {this.state.moviesRomance.filter(moviesRomance => moviesRomance.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Ciencia-Ficción"/>
+							<OurCarousel 
+								items = {this.state.moviesSyfy.filter(moviesSyfy => moviesSyfy.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Thriller"/>
+							<OurCarousel 
+								items = {this.state.moviesThriller.filter(moviesThriller => moviesThriller.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
+					<div className = "row mt-5 mb-5">
+						 <TitleList title = "Bélicas"/>
+							<OurCarousel 
+								items = {this.state.moviesWar.filter(moviesWar => moviesWar.title.includes(this.state.filter)).map(movie =>
+									<div>
+										<Link to={'/movie/' + movie.id}>
+											<Card>
+												<Card.Img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path} alt=''  />
+											</Card>
+										</Link>
+									</div>
+								)}
+						 />                        
+                    </div>
+		
                 </div>
 			</div>;
 	}
