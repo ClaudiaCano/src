@@ -14,6 +14,8 @@ import CardColumns from 'react-bootstrap/CardColumns';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import FormControl from 'react-bootstrap/FormControl';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 //https://www.npmjs.com/package/react-multi-carousel
 import Carousel from 'react-multi-carousel';
@@ -29,6 +31,8 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
+
+import { createBrowserHistory } from 'history';
 
 /*--------------------------------------------------------------------------------------*/
 
@@ -51,6 +55,7 @@ const urlSyfy = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075b
 const urlThriller = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=53";
 const urlWar = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=10752";
 
+const history = createBrowserHistory();
 
 /*--------------------------------------------------------------------------------------*/
 
@@ -240,7 +245,6 @@ function App() {
 			<Nav className="mr-auto">
 			</Nav>
 			<Form inline>
-			  <FormControl size = "sm" type="text" placeholder="Title" className="mr-sm-2 transparent-input" />
 			  <Button size = "sm" variant="outline-light">Search</Button>
 			</Form>
         </Navbar>
@@ -252,6 +256,8 @@ function App() {
   );
 }
 
+// <FormControl size = "sm" type="text" placeholder="Title" className="mr-sm-2 transparent-input" />
+
 function ModalSwitch() {
   let location = useLocation();
 
@@ -259,7 +265,8 @@ function ModalSwitch() {
     <div>
       <Switch location={location}>
         <Route exact path="/" children={<Home />} />
-        <Route path="/movie/:id" children={<Child />} />
+	    <Route path="/movie/:id" component = {Movie}/>
+	  	<Route path="/search" children={<Search />} />
       </Switch>
     </div>
   );
@@ -332,6 +339,10 @@ class Home extends React.Component{
 			<p>Loading...</p> :
 			<div>
                 <Cover />
+			
+				<Link to="/search">
+					<Button size = "sm" variant="outline-light">Search</Button>
+				</Link>
             
                 <div className = "container">
                     <div className = "row mt-5 mb-5">
@@ -594,17 +605,108 @@ class Home extends React.Component{
 			</div>;
 	}
 }
+		
+class Search extends React.Component{
+    constructor() {
+        super();
+        this.state = {
+            moviesSearch: [],
+            loading: true,
+			filter: "",
+        }
+    }
 
-function Child() {
-  // We can use the `useParams` hook here to access
-  // the dynamic pieces of the URL.
-  let { id } = useParams();
+    componentDidMount() {
+        fetch("https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es_ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1")
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    moviesSearch: json.results,
+                    loading: false,
+                });
+            });
+    }
+	
+	handleSubmit = (event) => {
+		event.preventDefault()
 
-  return (
-    <div>
-      <h3>ID: {id}</h3>
-    </div>
-  );
+		fetch('https://api.themoviedb.org/3/search/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&query=' + this.inputNode.value + '&page=1')
+		.then(response => response.json())
+		.then(json => {
+			this.setState({
+				moviesSearch: json.results,
+				loading: false,
+				filter: this.inputNode.value,
+			});
+		});
+  }
+	
+//render del carrousel con scroll horizontal
+	render() {
+        return this.state.loading ?
+			<p>Loading...</p> :
+			<div>		
+				<div className = "container">
+                	<div className = "row mt-5 mb-5">
+						<Form onSubmit={this.handleSubmit} className = "SearchForm">
+						    <Row>
+								<Col className = "">
+								  <FormControl className = "transparent-input" size = "sm" ref={node => (this.inputNode = node)} type="text" name="query" placeholder="Title" />
+								</Col>
+								<Col>
+								    <Button type="submit" size = "sm" variant="outline-light">Search</Button>
+								</Col>
+						    </Row>
+						</Form>
+		
+						<CardColumns>
+								{this.state.moviesSearch.map(movie =>
+								<Card style={{ width: '18rem' }}>
+									<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path} />
+									<Card.Body>
+										<Card.Title>{movie.title}</Card.Title>
+										<Card.Text>Nota: {movie.vote_average}</Card.Text>
+										<Link to={'/movie/' + movie.id}>
+											<Button variant="outline-dark">Details</Button>
+										</Link>
+									</Card.Body>
+								</Card>
+							)}
+						</CardColumns>
+					</div>
+                </div>
+			</div>;
+	}
+}
+class Movie extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            movie: [],
+            loading: true,
+			id: this.props.match.params.id
+        }
+    }
+
+    componentDidMount() {
+        fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES')
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    movie: json.results,
+                    loading: false,
+                });
+            });
+    }
+	
+	render() {
+        return this.state.loading ?
+			<p>Loading...</p> :
+			<div>	
+			<br/><br/><br/>
+				<h3>ID: {this.props.match.params.id}</h3>
+			</div>;
+	}
 }
 
 export default App;

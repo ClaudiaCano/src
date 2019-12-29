@@ -52,11 +52,20 @@ body {
     background-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.3));
 }
 
-input.transparent-input{
+input.transparent-input {
     background-color:transparent !important;
+	color: white !important;
+}
+
+.SearchForm {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	width: 60%;
 }
 
 .card {
 	border: none !important;
+	margin-right: 15px;
+	color: black !important;
 }
 
