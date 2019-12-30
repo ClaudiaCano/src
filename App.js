@@ -30,9 +30,10 @@ import {
   useParams,
   useHistory,
   useLocation,
+	withRouter,
 } from "react-router-dom";
 
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
 
 /*--------------------------------------------------------------------------------------*/
 
@@ -55,7 +56,7 @@ const urlSyfy = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075b
 const urlThriller = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=53";
 const urlWar = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=10752";
 
-const history = createBrowserHistory();
+export const appHistory = createBrowserHistory();
 
 /*--------------------------------------------------------------------------------------*/
 
@@ -266,8 +267,20 @@ function ModalSwitch() {
       <Switch location={location}>
         <Route exact path="/" children={<Home />} />
 	    <Route path="/movie/:id" component = {Movie}/>
-	  	<Route path="/search" children={<Search />} />
+	  	<Route path="/search" component={Search} />
       </Switch>
+    </div>
+  );
+}
+
+function ModalSwitchSearch() {
+  let location = useLocation();
+
+  return (
+    <div>
+		<Switch location={location}>
+			<Route path="/search/:query" component = {withRouter(SearchResults)} />
+		</Switch>
     </div>
   );
 }
@@ -644,19 +657,32 @@ class Search extends React.Component{
 						<Form onSubmit={this.handleSubmit} className = "SearchForm">
 						    <Row>
 								<Col className = "">
-								  <FormControl className = "transparent-input" size = "sm" ref={node => (this.inputNode = node)} type="text" name="query" placeholder="Title" />
-									<input type = "text" onChange = {this.filterChange} value={this.state.text} />
+								    <FormControl className = "transparent-input" size = "sm" type="text" placeholder="Title" onChange = {this.filterChange} value={this.state.text}/>
 								</Col>
 								<Col>
 								<Link to={'/search/' + this.state.filter}>
-								    <p>Search</p>
+								    <Button size = "sm" variant="outline-light">Search</Button>
 								</Link>
 								</Col>
 						    </Row>
 						</Form>
-		
-						<Switch>
-							<Route exact path="/search">
+
+						<ModalSwitchSearch />
+					</div>
+                </div>
+			</div>;
+	}
+}
+
+// type="submit"
+/* <Col className = "">
+								  <FormControl className = "transparent-input" size = "sm" ref={node => (this.inputNode = node)} type="text" name="query" placeholder="Title" />
+								</Col>
+								<Col>
+								    <Button to="/search/:query" size = "sm" variant="outline-light">Search</Button>
+								</Col>
+								
+								
 								<CardColumns>
 									{this.state.moviesSearch.map(movie =>
 									<Card style={{ width: '18rem' }} className = "text-white bg-secondary">
@@ -671,23 +697,6 @@ class Search extends React.Component{
 									</Card>
 									)}
 								</CardColumns>
-							</Route>
-							<Route path="/search/:query" component = {SearchResults} />
-								
-					  	</Switch>
-					</div>
-                </div>
-			</div>;
-	}
-}
-
-// type="submit"
-/* <Col className = "">
-								  <FormControl className = "transparent-input" size = "sm" ref={node => (this.inputNode = node)} type="text" name="query" placeholder="Title" />
-								</Col>
-								<Col>
-								    <Button to="/search/:query" size = "sm" variant="outline-light">Search</Button>
-								</Col>
 								*/
 
 class Movie extends React.Component{
