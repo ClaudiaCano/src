@@ -614,6 +614,8 @@ class Search extends React.Component{
             loading: true,
 			filter: "",
         }
+			
+		this.filterChange = this.filterChange.bind(this);
     }
 
     componentDidMount() {
@@ -627,21 +629,12 @@ class Search extends React.Component{
             });
     }
 	
-	handleSubmit = (event) => {
-		event.preventDefault()
-
-		fetch('https://api.themoviedb.org/3/search/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&query=' + this.inputNode.value + '&page=1')
-		.then(response => response.json())
-		.then(json => {
-			this.setState({
-				moviesSearch: json.results,
-				loading: false,
-				filter: this.inputNode.value,
-			});
-		});
-  }
+	filterChange(event) {
+        this.setState({
+            filter: event.target.value	// changes the filter value (which is empty at the beggining) to the value of the text input
+        });
+    }
 	
-//render del carrousel con scroll horizontal
 	render() {
         return this.state.loading ?
 			<p>Loading...</p> :
@@ -652,37 +645,56 @@ class Search extends React.Component{
 						    <Row>
 								<Col className = "">
 								  <FormControl className = "transparent-input" size = "sm" ref={node => (this.inputNode = node)} type="text" name="query" placeholder="Title" />
+									<input type = "text" onChange = {this.filterChange} value={this.state.text} />
 								</Col>
 								<Col>
-								    <Button type="submit" size = "sm" variant="outline-light">Search</Button>
+								<Link to={'/search/' + this.state.filter}>
+								    <p>Search</p>
+								</Link>
 								</Col>
 						    </Row>
 						</Form>
 		
-						<CardColumns>
-								{this.state.moviesSearch.map(movie =>
-								<Card style={{ width: '18rem' }}>
-									<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path} />
-									<Card.Body>
-										<Card.Title>{movie.title}</Card.Title>
-										<Card.Text>Nota: {movie.vote_average}</Card.Text>
-										<Link to={'/movie/' + movie.id}>
-											<Button variant="outline-dark">Details</Button>
-										</Link>
-									</Card.Body>
-								</Card>
-							)}
-						</CardColumns>
+						<Switch>
+							<Route exact path="/search">
+								<CardColumns>
+									{this.state.moviesSearch.map(movie =>
+									<Card style={{ width: '18rem' }} className = "text-white bg-secondary">
+										<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path} />
+										<Card.Body>
+											<Card.Title>{movie.title}</Card.Title>
+											<Card.Text>Nota: {movie.vote_average}</Card.Text>
+											<Link to={'/movie/' + movie.id}>
+												<Button variant="outline-dark">Details</Button>
+											</Link>
+										</Card.Body>
+									</Card>
+									)}
+								</CardColumns>
+							</Route>
+							<Route path="/search/:query" component = {SearchResults} />
+								
+					  	</Switch>
 					</div>
                 </div>
 			</div>;
 	}
 }
+
+// type="submit"
+/* <Col className = "">
+								  <FormControl className = "transparent-input" size = "sm" ref={node => (this.inputNode = node)} type="text" name="query" placeholder="Title" />
+								</Col>
+								<Col>
+								    <Button to="/search/:query" size = "sm" variant="outline-light">Search</Button>
+								</Col>
+								*/
+
 class Movie extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            movie: [],
+            moviedetails: null,
             loading: true,
 			id: this.props.match.params.id
         }
@@ -693,18 +705,80 @@ class Movie extends React.Component{
             .then(response => response.json())
             .then(json => {
                 this.setState({
-                    movie: json.results,
+                    moviedetails: json,
                     loading: false,
                 });
             });
+		console.log(this.state.id);
     }
 	
 	render() {
         return this.state.loading ?
 			<p>Loading...</p> :
 			<div>	
-			<br/><br/><br/>
-				<h3>ID: {this.props.match.params.id}</h3>
+				<div className = "w-screen">
+						<img className = "Bg-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + this.state.moviedetails.backdrop_path} alt="" fluid={true}/>
+				</div>
+				<div className = "container">
+					<div className = "row">
+						<div className = "col-3">
+							<img className = "Poster-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + this.state.moviedetails.poster_path} alt=""/>
+						</div>
+						<div className = "col">
+							<h1 className = "Movie-title">{this.state.moviedetails.title}</h1>
+							<p>Release date: {this.state.moviedetails.release_date}</p>
+							<p className = "Sinopsis">{this.state.moviedetails.overview}</p>
+						</div>
+					</div>
+				</div>
+			</div>;
+	}
+}
+
+class SearchResults extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchResults: [],
+            loading: true,
+			query: this.props.match.params.query
+        }
+    }
+
+    componentDidMount() {
+        fetch('https://api.themoviedb.org/3/search/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&query=' + this.state.query + '&page=1')
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    searchResults: json.results,
+                    loading: false,
+                });
+            });
+		console.log(this.state.query);
+    }
+	
+	render() {
+        return this.state.loading ?
+			<p>Loading...</p> :
+			<div>	
+				<div className = "container">
+					<div className = "row mt-5 mb-5">
+						<CardColumns>
+							{this.state.searchResults.map(movie =>
+							<Card style={{ width: '18rem' }} className = "text-white bg-secondary">
+								<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path} />
+								<Card.Body>
+									<Card.Title>{movie.title}</Card.Title>
+									<Card.Text>Nota: {movie.vote_average}</Card.Text>
+									<Link to={'/movie/' + movie.id}>
+										<Button variant="outline-dark">Details</Button>
+									</Link>
+								</Card.Body>
+							</Card>
+							)}
+						</CardColumns>
+					</div>
+				</div>
 			</div>;
 	}
 }
