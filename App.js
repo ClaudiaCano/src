@@ -1,4 +1,5 @@
 import React from 'react';
+import { Animate } from "react-move";
 import logo from './logo.svg';
 import './App.css';
 
@@ -16,6 +17,9 @@ import Nav from 'react-bootstrap/Nav';
 import FormControl from 'react-bootstrap/FormControl';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import CardDeck from 'react-bootstrap/CardDeck';
 
 //https://www.npmjs.com/package/react-multi-carousel
 import Carousel from 'react-multi-carousel';
@@ -30,10 +34,15 @@ import {
   useParams,
   useHistory,
   useLocation,
-	withRouter,
+  withRouter,
 } from "react-router-dom";
 
 import { createBrowserHistory } from "history";
+
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { buildStyles } from 'react-circular-progressbar';
+import { easeQuadInOut } from "d3-ease";
 
 /*--------------------------------------------------------------------------------------*/
 
@@ -168,6 +177,109 @@ class OurCarousel extends React.Component{
 				</Carousel>;
 	}
 }
+class AnimatedProgressProvider extends React.Component {
+  interval = undefined;
+
+  state = {
+    isAnimated: false
+  };
+
+  static defaultProps = {
+    valueStart: 0
+  };
+
+  componentDidMount() {
+    if (this.props.repeat) {
+      this.interval = window.setInterval(() => {
+        this.setState({
+          isAnimated: !this.state.isAnimated
+        });
+      }, this.props.duration * 1000);
+    } else {
+      this.setState({
+        isAnimated: !this.state.isAnimated
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.interval);
+  }
+
+  render() {
+    return (
+      <Animate
+        start={() => ({
+          value: this.props.valueStart
+        })}
+        update={() => ({
+          value: [
+            this.state.isAnimated ? this.props.valueEnd : this.props.valueStart
+          ],
+          timing: {
+            duration: this.props.duration * 1000,
+            ease: this.props.easingFunction
+          }
+        })}
+      >
+        {({ value }) => this.props.children(value)}
+      </Animate>
+    );
+  }
+}
+class Rating extends React.Component {
+	render() {
+		const value = this.props.rating;
+		return <AnimatedProgressProvider
+        valueStart={0}
+        valueEnd={this.props.rating}
+        duration={3}
+        easingFunction={easeQuadInOut}
+      >
+        {value => {
+          const roundedValue = Math.round(value*10);
+          return (
+            <CircularProgressbar
+              value={value}
+              text={roundedValue}
+			  maxValue={10}
+              /* This is important to include, because if you're fully managing the
+        animation yourself, you'll want to disable the CSS animation. */
+              styles={buildStyles({ 
+				  pathTransition: "none",
+				  // Colors
+				  pathColor: '#ff0080',
+				  textColor: '#ffffff',
+				  trailColor: '#505050',
+				  backgroundColor: '#151515',
+				  
+				  textSize: '35px',
+			  })}
+            />
+          );
+        }}
+      </AnimatedProgressProvider>
+	}
+}
+
+/*const value = this.props.rating;
+		return <AnimatedProgressProvider
+        valueStart={0}
+        valueEnd={this.props.rating}
+        duration={5}
+        easingFunction={easeQuadInOut}
+      	>
+        {value => {
+          return (
+            <CircularProgressbar
+              value={value}
+              text={this.props.rating}
+			  maxValue = {10}
+              styles={buildStyles({ pathTransition: "none" })}
+            />
+          );
+        }}
+      </AnimatedProgressProvider>*/
 
 /*class MovieList extends React.Component{
     render(){
@@ -211,7 +323,7 @@ class Cover extends React.Component{
     
 	render() {
         return this.state.loading ?
-			<p>Loading...</p> :
+			<p></p> :
 			<div className = "w-screen">
                 {this.state.movieCover.map(movie =>
                         <div>
@@ -241,16 +353,20 @@ class Cover extends React.Component{
 function App() {
   return (
       <div>
-        <Navbar id = "navbargrad" scrolling dark expand = "md" fixed="top" variant="dark">
-			<Navbar.Brand href="#home">MovieSearch</Navbar.Brand>
-			<Nav className="mr-auto">
-			</Nav>
-			<Form inline>
-			  <Button size = "sm" variant="outline-light">Search</Button>
-			</Form>
-        </Navbar>
-
-        <Router>
+	  	<Router>
+			<Navbar id = "navbargrad" scrolling dark expand = "md" fixed="top" variant="dark">
+				<Link to="/">			
+	  				<Navbar.Brand>MovieSearch</Navbar.Brand>
+	  			</Link>
+				<Nav className="mr-auto">
+				</Nav>
+				<Form inline>
+					<Link to="/search">
+						<Button size = "sm" variant="outline-light">Search</Button>
+					</Link>
+				</Form>
+			</Navbar>
+	  
         	<ModalSwitch />
         </Router>
       </div>
@@ -349,13 +465,10 @@ class Home extends React.Component{
 //render del carrousel con scroll horizontal
 	render() {
         return this.state.loading ?
-			<p>Loading...</p> :
-			<div>
+			<Spinner className = "spinner" animation="grow" variant="light" role="status">
+			  <span className="sr-only">Loading...</span>
+			</Spinner> :  <div>
                 <Cover />
-			
-				<Link to="/search">
-					<Button size = "sm" variant="outline-light">Search</Button>
-				</Link>
             
                 <div className = "container">
                     <div className = "row mt-5 mb-5">
@@ -650,7 +763,9 @@ class Search extends React.Component{
 	
 	render() {
         return this.state.loading ?
-			<p>Loading...</p> :
+			<Spinner className = "spinner" animation="grow" variant="light" role="status">
+			  <span className="sr-only">Loading...</span>
+			</Spinner> :
 			<div>		
 				<div className = "container">
                 	<div className = "row mt-5 mb-5">
@@ -704,12 +819,29 @@ class Movie extends React.Component{
         super(props);
         this.state = {
             moviedetails: null,
+			moviecredits: [],
             loading: true,
 			id: this.props.match.params.id
         }
     }
 
     componentDidMount() {
+		Promise.all([
+			fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES'), fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '/credits?api_key=23bc25e075bc85d71e198eee635d5bf9')])
+
+		  .then(([resDetails, resCredits]) => { 
+			 return Promise.all([resDetails.json(), resCredits.json()]) 
+		  })
+		  .then(([resDetails, resCredits]) => {
+			this.setState({
+				moviedetails: resDetails,
+				moviecredits: resCredits,
+				loading: false,
+			});
+		  });
+	}
+
+    /*componentDidMount() {
         fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES')
             .then(response => response.json())
             .then(json => {
@@ -719,12 +851,14 @@ class Movie extends React.Component{
                 });
             });
 		console.log(this.state.id);
-    }
+    }*/
 	
 	render() {
         return this.state.loading ?
-			<p>Loading...</p> :
-			<div>	
+			<Spinner className = "spinner" animation="grow" variant="light" role="status">
+			  <span className="sr-only">Loading...</span>
+			</Spinner> :
+			<div className = "MovieDetailPage">	
 				<div className = "w-screen">
 						<img className = "Bg-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + this.state.moviedetails.backdrop_path} alt="" fluid={true}/>
 				</div>
@@ -734,9 +868,37 @@ class Movie extends React.Component{
 							<img className = "Poster-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + this.state.moviedetails.poster_path} alt=""/>
 						</div>
 						<div className = "col">
-							<h1 className = "Movie-title">{this.state.moviedetails.title}</h1>
-							<p>Release date: {this.state.moviedetails.release_date}</p>
-							<p className = "Sinopsis">{this.state.moviedetails.overview}</p>
+							<div className = "row">
+								<h1 className = "Movie-title">{this.state.moviedetails.title}</h1>
+								<p>{this.state.moviedetails.release_date}.substring(0, 4)</p>
+							</div>
+							<div className = "ContenedorScroll">
+								<div className = "row">
+									<Rating rating = {this.state.moviedetails.vote_average}> </Rating>
+									<p>Puntuación</p>
+								</div>
+								<p className = "Tagline">{this.state.moviedetails.tagline}</p>
+								<p className = "Sinopsis">{this.state.moviedetails.overview}</p>
+								<ButtonToolbar>
+									{this.state.moviedetails.genres.map(movie =>
+										<div>
+											<Button className = "mr-2" variant="outline-secondary" size="sm">{movie.name}</Button>
+										</div>
+									)}
+								</ButtonToolbar>
+								<h3 className = "CastTitle">Cast</h3>
+								<CardDeck className = "mt-4 mb-4">
+									{this.state.moviecredits.cast.slice(0, 5).map(actor =>
+										<Card className = "ActorCard" text = "white">
+											<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path} />
+											<Card.Body>
+												<Card.Title>{actor.name}</Card.Title>
+												<Card.Text>{actor.character}</Card.Text>
+											</Card.Body>
+										</Card>
+									)}
+								</CardDeck>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -768,7 +930,9 @@ class SearchResults extends React.Component{
 	
 	render() {
         return this.state.loading ?
-			<p>Loading...</p> :
+			<Spinner className = "spinner" animation="grow" variant="light" role="status">
+			  <span className="sr-only">Loading...</span>
+			</Spinner> :
 			<div>	
 				<div className = "container">
 					<div className = "row mt-5 mb-5">
