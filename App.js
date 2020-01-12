@@ -1,13 +1,13 @@
 import React from 'react';
-import { Animate } from "react-move";
 import logo from './logo.svg';
+
+// Our own styles
 import './App.css';
 
-//https://react-bootstrap.github.io/getting-started/introduction
+// Import library Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Button from 'react-bootstrap/Button';
-//import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/Card';
@@ -21,11 +21,11 @@ import Spinner from 'react-bootstrap/Spinner';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import CardDeck from 'react-bootstrap/CardDeck';
 
-//https://www.npmjs.com/package/react-multi-carousel
+// Import Library Multi-Carousel
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-// https://reacttraining.com/react-router/web/guides/quick-start
+// Import Library Router
 import {
   BrowserRouter as Router,
   Switch,
@@ -37,14 +37,16 @@ import {
   withRouter,
 } from "react-router-dom";
 
-import { createBrowserHistory } from "history";
-
+// Import Libraries for animated progress bar that shows punctuation of a movie
+import { Animate }  from 'react-move';
 import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 import { buildStyles } from 'react-circular-progressbar';
 import { easeQuadInOut } from "d3-ease";
+import 'react-circular-progressbar/dist/styles.css';
 
 /*--------------------------------------------------------------------------------------*/
+
+// url's for fetch in home page
 
 const urlCover = "https://api.themoviedb.org/3/find/tt8623904?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&external_source=imdb_id";
 const urlNew = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&year=2019";
@@ -65,118 +67,76 @@ const urlSyfy = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075b
 const urlThriller = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=53";
 const urlWar = "https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=10752";
 
-export const appHistory = createBrowserHistory();
-
 /*--------------------------------------------------------------------------------------*/
 
-class TitleList extends React.Component{
+// Our personal class components
+
+// Title of each carousel
+class TitleList extends React.Component {
 	render(){
 		return <h2>{this.props.title}</h2>;
 	}
 }
-class CoverCarrousel extends React.Component{
-	render(){
-		return <Carousel
-					additionalTransfrom={0}	
-                    arrows={false}
-					className=""
-					containerClass="container"
-					dotListClass=""
-					draggable={false}
-					focusOnSelect={false}
-					infinite
-					itemClass=""
-					keyBoardControl
-					minimumTouchDrag={80}
-					renderButtonGroupOutside={false}
-					renderDotsOutside={false}
-					responsive={{
-						desktop: {
-							breakpoint: {
-								max: 3000,
-								min: 1024
-							},
-							items: 1,
-							
-						},
-						mobile: {
-							breakpoint: {
-								max: 464,
-								min: 0
-							},
-							items: 1,
-						},
-						tablet: {
-							breakpoint: {
-								max: 1024,
-								min: 464
-							},
-							items: 1,
-						}
-					}}
-					showDots={false}
-					sliderClass="" 
-				>
-					{this.props.items}
-				</Carousel>;
-	}
-}
+
+// Customized Carousel for each list in home page
 class OurCarousel extends React.Component{
 	render(){
 		return <Carousel
-					additionalTransfrom={0}
-					arrows
-					removeArrowOnDeviceType="mobile, tablet"
-					autoPlaySpeed={3000}
-					centerMode
-					className=""
-					containerClass="container"
-					dotListClass=""
-					draggable={false}
-					focusOnSelect={false}
-					infinite
-					itemClass=""
-					keyBoardControl
-					minimumTouchDrag={80}
-					renderButtonGroupOutside={false}
-					renderDotsOutside={false}
-					responsive={{
-						desktop: {
-							breakpoint: {
-								max: 3000,
-								min: 1024
-							},
-							items: 5,
-							partialVisibilityGutter: 40,
-							slidesToSlide:5
-						},
-						mobile: {
-							breakpoint: {
-								max: 464,
-								min: 0
-							},
-							items: 1,
-							partialVisibilityGutter: 30,
-							slidesToSlide:1
-						},
-						tablet: {
-							breakpoint: {
-								max: 1024,
-								min: 464
-							},
-							items: 2,
-							partialVisibilityGutter: 30,
-							slidesToSlide:1
-						}
-					}}
-					showDots={false}
-					sliderClass=""
-					swipeable  
-				>
-					{this.props.items}
-				</Carousel>;
+			additionalTransfrom={0}
+			arrows
+			removeArrowOnDeviceType="mobile, tablet"
+			autoPlaySpeed={3000}
+			centerMode
+			className=""
+			containerClass="container"
+			dotListClass=""
+			draggable={false}
+			focusOnSelect={false}
+			infinite
+			itemClass=""
+			keyBoardControl
+			minimumTouchDrag={80}
+			renderButtonGroupOutside={false}
+			renderDotsOutside={false}
+			responsive={{
+				desktop: {
+					breakpoint: {
+						max: 3000,
+						min: 1024
+					},
+					items: 5,
+					partialVisibilityGutter: 40,
+					slidesToSlide:5
+				},
+				mobile: {
+					breakpoint: {
+						max: 464,
+						min: 0
+					},
+					items: 1,
+					partialVisibilityGutter: 30,
+					slidesToSlide:1
+				},
+				tablet: {
+					breakpoint: {
+						max: 1024,
+						min: 464
+					},
+					items: 2,
+					partialVisibilityGutter: 30,
+					slidesToSlide:1
+				}
+			}}
+			showDots={false}
+			sliderClass=""
+			swipeable  
+		>
+			{this.props.items}
+		</Carousel>;
 	}
 }
+
+// Animated Progress Bar Base
 class AnimatedProgressProvider extends React.Component {
   interval = undefined;
 
@@ -227,6 +187,8 @@ class AnimatedProgressProvider extends React.Component {
     );
   }
 }
+
+// Customized animated Progress Bar for movie rating
 class Rating extends React.Component {
 	render() {
 		const value = this.props.rating;
@@ -262,24 +224,23 @@ class Rating extends React.Component {
 	}
 }
 
-/*const value = this.props.rating;
-		return <AnimatedProgressProvider
-        valueStart={0}
-        valueEnd={this.props.rating}
-        duration={5}
-        easingFunction={easeQuadInOut}
-      	>
-        {value => {
-          return (
-            <CircularProgressbar
-              value={value}
-              text={this.props.rating}
-			  maxValue = {10}
-              styles={buildStyles({ pathTransition: "none" })}
-            />
-          );
-        }}
-      </AnimatedProgressProvider>*/
+/* The Cover class shows a custom cover in top of the home page.
+ * It isn't a fetch of data because of aesthetic reasons.
+ */
+class Cover extends React.Component{
+	render() {
+        return <div className = "w-screen">
+			<img className = "Cover-image" style = {{width: "100%"}} src="https://image.tmdb.org/t/p/original/skvI4rYFrKXS73BJxWGH54Omlvv.jpg" alt="" fluid={true}/>
+		</div>;
+	}
+}
+
+/*--------------------------------------------------------------------------------------*/
+
+/* We tried to create a class that would implement the OurCarousel class in which we would only 
+ * have to define the genre of the list in order to optimize the code; but it was impossible for us to 
+ * concatenate the variables because the gender prop had to be included in the map state.
+ */
 
 /*class MovieList extends React.Component{
     render(){
@@ -298,58 +259,10 @@ class Rating extends React.Component {
 }*/
 
 /*--------------------------------------------------------------------------------------*/
-//imagen de fondo  src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path}
 
-class Cover extends React.Component{
-    constructor() {
-        super();
-        this.state = {
-            movieCover: [],
-            loading: true,
-        }
-    }
-    
-    componentDidMount() {
-        fetch(urlCover)
-
-      .then(resCover => resCover.json())
-      .then(json =>{
-          this.setState({
-              movieCover: json.movie_results,
-              loading: false,
-          });
-      });
-    }
-    
-	render() {
-        return this.state.loading ?
-			<p></p> :
-			<div className = "w-screen">
-                {this.state.movieCover.map(movie =>
-                        <div>
-                            <div></div>
-                            <img className = "Cover-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path} alt="" fluid={true}/>
-                        </div>
-                )}
-			</div>;
-	}
-}
-        
-        /*<CoverCarrousel
-                    items = {this.state.movieCover.map(movie =>
-                        <div>
-                            <img className="w-100" src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path} alt=""/>
-                            <h3>{movie.title}</h3>
-                        </div>
-                    )}
-                />
-        */
-
-        // <h3 className = "Movie-title">{movie.title}</h3>
-
-
-/*--------------------------------------------------------------------------------------*/
-
+/* The function App is the base of all the page. It is the only component that renders.
+ * It consists of a navigation bar with a searchbox and the space where the different sites are rendered.
+ */
 function App() {
   return (
       <div>
@@ -373,8 +286,7 @@ function App() {
   );
 }
 
-// <FormControl size = "sm" type="text" placeholder="Title" className="mr-sm-2 transparent-input" />
-
+// Routes switch for main Router in App component.
 function ModalSwitch() {
   let location = useLocation();
 
@@ -389,6 +301,7 @@ function ModalSwitch() {
   );
 }
 
+// Route switch for Search Router.
 function ModalSwitchSearch() {
   let location = useLocation();
 
@@ -401,6 +314,11 @@ function ModalSwitchSearch() {
   );
 }
 
+/*--------------------------------------------------------------------------------------*/
+
+/* The Home class renders the main page in the App component.
+ * It consists of the component Cover and the carousels for each list.
+ */
 class Home extends React.Component{
     constructor() {
         super();
@@ -411,7 +329,8 @@ class Home extends React.Component{
         }
         this.filterChange = this.filterChange.bind(this);
     }
-
+	
+	// fetch of the url's with a promise
     componentDidMount() {
     Promise.all([
         fetch(urlCover), fetch(urlNew), fetch(urlAction), fetch(urlAdventure), fetch(urlAnimation), fetch(urlComedy), fetch(urlCrime), fetch(urlDrama), fetch(urlFamily), fetch(urlFantasy), fetch(urlHistory), fetch(urlTerror), fetch(urlMusical), fetch(urlMystery), fetch(urlRomance), fetch(urlSyfy), fetch(urlThriller), fetch(urlWar)])
@@ -442,19 +361,7 @@ class Home extends React.Component{
             loading: false,
         });
       });
-}
-   /* 
-    componentDidMount() {
-        fetch("https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28")
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    moviesAction: json.results,
-                    loading: false,
-                });
-            });
-    }
-    */
+	}
 
     filterChange(event) {
         this.setState({
@@ -462,7 +369,7 @@ class Home extends React.Component{
         });
     }
 	
-//render del carrousel con scroll horizontal
+	// While the page loads, a spinner is shown.
 	render() {
         return this.state.loading ?
 			<Spinner className = "spinner" animation="grow" variant="light" role="status">
@@ -732,27 +639,115 @@ class Home extends React.Component{
 	}
 }
 		
+/*--------------------------------------------------------------------------------------*/
+		
+// The Movie class renders the movie details page in the App component.
+class Movie extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            moviedetails: null,
+			moviecredits: [],
+            loading: true,
+			id: this.props.match.params.id
+        }
+    }
+
+	// Fetch of the movie details and credits url's.
+    componentDidMount() {
+		Promise.all([
+			fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES'), fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '/credits?api_key=23bc25e075bc85d71e198eee635d5bf9')])
+
+		  .then(([resDetails, resCredits]) => { 
+			 return Promise.all([resDetails.json(), resCredits.json()]) 
+		  })
+		  .then(([resDetails, resCredits]) => {
+			this.setState({
+				moviedetails: resDetails,
+				moviecredits: resCredits,
+				loading: false,
+			});
+		  });
+	}
+	
+
+	// While the page loads, a spinner is shown.
+	render() {
+        return this.state.loading ?
+			<Spinner className = "spinner" animation="grow" variant="light" role="status">
+			  <span className="sr-only">Loading...</span>
+			</Spinner> :
+			<div className = "MovieDetailPage">	
+				<div className = "w-screen">
+						<img className = "Bg-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + this.state.moviedetails.backdrop_path} alt="" fluid={true}/>
+				</div>
+				
+				<div className = "container">
+					
+					<div className = "row">
+						<div className = "col-3">
+							<img className = "Poster-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + this.state.moviedetails.poster_path} alt=""/>
+						</div>
+						<div className = "col">
+							
+							<div className = "row title">
+								<div className = "col-1">
+									<Rating rating = {this.state.moviedetails.vote_average}> </Rating>
+								</div>
+
+								<div className = "col">
+									<h1> {this.state.moviedetails.title} <span className = "year"> {`${`${this.state.moviedetails.release_date}`.substring(0, 4)}`}</span> </h1>
+								</div>
+							</div>
+							
+							<div className = "row pl-3">
+								<p className = "Tagline">{this.state.moviedetails.tagline}</p>
+								<p className = "Sinopsis">{this.state.moviedetails.overview}</p>
+								<ButtonToolbar>
+									{this.state.moviedetails.genres.map(movie =>
+										<div>
+											<Button className = "mr-2" variant="outline-secondary" size="sm">{movie.name}</Button>
+										</div>
+									)}
+								</ButtonToolbar>
+							</div>
+
+							<div className = "row pl-3">
+								<h3 className = "CastTitle">Cast</h3>
+								<CardDeck className = "mt-4 mb-4">
+									{this.state.moviecredits.cast.slice(0, 5).map(actor =>
+										<Card className = "ActorCard" text = "white">
+											<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path} />
+											<Card.Body>
+												<Card.Title>{actor.name}</Card.Title>
+												<Card.Text>{actor.character}</Card.Text>
+											</Card.Body>
+										</Card>
+									)}
+								</CardDeck>
+							</div>
+
+						</div>
+							
+					</div>
+
+				</div>
+
+			</div>;
+	}
+}
+		
+/*--------------------------------------------------------------------------------------*/
+
+// The Search class renders a search box in the App component.		
 class Search extends React.Component{
     constructor() {
         super();
         this.state = {
-            moviesSearch: [],
-            loading: true,
 			filter: "",
         }
 			
 		this.filterChange = this.filterChange.bind(this);
-    }
-
-    componentDidMount() {
-        fetch("https://api.themoviedb.org/3/discover/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es_ES&sort_by=popularity.desc&include_adult=false&include_video=false&page=1")
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    moviesSearch: json.results,
-                    loading: false,
-                });
-            });
     }
 	
 	filterChange(event) {
@@ -761,12 +756,12 @@ class Search extends React.Component{
         });
     }
 	
+	/* To search, the value in the form input is saved everytime the text is changed.
+	 * This value is then passed to the link as a GET parameter. The query is automatically URI encoded.
+	 * Below the form there is the ModalSwitchSearch (commented previously) that loads the SearchResults component.
+	 */
 	render() {
-        return this.state.loading ?
-			<Spinner className = "spinner" animation="grow" variant="light" role="status">
-			  <span className="sr-only">Loading...</span>
-			</Spinner> :
-			<div>		
+        return <div>		
 				<div className = "container">
                 	<div className = "row mt-5 mb-5">
 						<Form onSubmit={this.handleSubmit} className = "SearchForm">
@@ -789,124 +784,11 @@ class Search extends React.Component{
 	}
 }
 
-// type="submit"
-/* <Col className = "">
-								  <FormControl className = "transparent-input" size = "sm" ref={node => (this.inputNode = node)} type="text" name="query" placeholder="Title" />
-								</Col>
-								<Col>
-								    <Button to="/search/:query" size = "sm" variant="outline-light">Search</Button>
-								</Col>
-								
-								
-								<CardColumns>
-									{this.state.moviesSearch.map(movie =>
-									<Card style={{ width: '18rem' }} className = "text-white bg-secondary">
-										<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path} />
-										<Card.Body>
-											<Card.Title>{movie.title}</Card.Title>
-											<Card.Text>Nota: {movie.vote_average}</Card.Text>
-											<Link to={'/movie/' + movie.id}>
-												<Button variant="outline-dark">Details</Button>
-											</Link>
-										</Card.Body>
-									</Card>
-									)}
-								</CardColumns>
-								*/
+/*--------------------------------------------------------------------------------------*/
 
-class Movie extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            moviedetails: null,
-			moviecredits: [],
-            loading: true,
-			id: this.props.match.params.id
-        }
-    }
-
-    componentDidMount() {
-		Promise.all([
-			fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES'), fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '/credits?api_key=23bc25e075bc85d71e198eee635d5bf9')])
-
-		  .then(([resDetails, resCredits]) => { 
-			 return Promise.all([resDetails.json(), resCredits.json()]) 
-		  })
-		  .then(([resDetails, resCredits]) => {
-			this.setState({
-				moviedetails: resDetails,
-				moviecredits: resCredits,
-				loading: false,
-			});
-		  });
-	}
-
-    /*componentDidMount() {
-        fetch('https://api.themoviedb.org/3/movie/' + this.state.id + '?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES')
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    moviedetails: json,
-                    loading: false,
-                });
-            });
-		console.log(this.state.id);
-    }*/
-	
-	render() {
-        return this.state.loading ?
-			<Spinner className = "spinner" animation="grow" variant="light" role="status">
-			  <span className="sr-only">Loading...</span>
-			</Spinner> :
-			<div className = "MovieDetailPage">	
-				<div className = "w-screen">
-						<img className = "Bg-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + this.state.moviedetails.backdrop_path} alt="" fluid={true}/>
-				</div>
-				<div className = "container">
-					<div className = "row">
-						<div className = "col-3">
-							<img className = "Poster-image" style = {{width: "100%"}} src={'https://image.tmdb.org/t/p/original/' + this.state.moviedetails.poster_path} alt=""/>
-						</div>
-						<div className = "col">
-							<div className = "row">
-								<h1 className = "Movie-title">{this.state.moviedetails.title}</h1>
-								<p>{this.state.moviedetails.release_date}.substring(0, 4)</p>
-							</div>
-							<div className = "ContenedorScroll">
-								<div className = "row">
-									<Rating rating = {this.state.moviedetails.vote_average}> </Rating>
-									<p>Puntuación</p>
-								</div>
-								<p className = "Tagline">{this.state.moviedetails.tagline}</p>
-								<p className = "Sinopsis">{this.state.moviedetails.overview}</p>
-								<ButtonToolbar>
-									{this.state.moviedetails.genres.map(movie =>
-										<div>
-											<Button className = "mr-2" variant="outline-secondary" size="sm">{movie.name}</Button>
-										</div>
-									)}
-								</ButtonToolbar>
-								<h3 className = "CastTitle">Cast</h3>
-								<CardDeck className = "mt-4 mb-4">
-									{this.state.moviecredits.cast.slice(0, 5).map(actor =>
-										<Card className = "ActorCard" text = "white">
-											<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path} />
-											<Card.Body>
-												<Card.Title>{actor.name}</Card.Title>
-												<Card.Text>{actor.character}</Card.Text>
-											</Card.Body>
-										</Card>
-									)}
-								</CardDeck>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>;
-	}
-}
-
+// The SearchResults class renders the results of the search query.
 class SearchResults extends React.Component{
+	// In the query state, the query (passed by GET) is saved.
     constructor(props) {
         super(props);
         this.state = {
@@ -916,6 +798,7 @@ class SearchResults extends React.Component{
         }
     }
 
+	// In the fetch url, the query state, which has the query given, is concatenated.
     componentDidMount() {
         fetch('https://api.themoviedb.org/3/search/movie?api_key=23bc25e075bc85d71e198eee635d5bf9&language=es-ES&query=' + this.state.query + '&page=1')
             .then(response => response.json())
@@ -928,6 +811,7 @@ class SearchResults extends React.Component{
 		console.log(this.state.query);
     }
 	
+	// When the page loads, a spinner is shown.
 	render() {
         return this.state.loading ?
 			<Spinner className = "spinner" animation="grow" variant="light" role="status">
@@ -938,13 +822,13 @@ class SearchResults extends React.Component{
 					<div className = "row mt-5 mb-5">
 						<CardColumns>
 							{this.state.searchResults.map(movie =>
-							<Card style={{ width: '18rem' }} className = "text-white bg-secondary">
+							<Card style={{ width: '18rem' }} className = "MovieCard" text = "white">
 								<Card.Img variant="top" src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path} />
 								<Card.Body>
 									<Card.Title>{movie.title}</Card.Title>
 									<Card.Text>Nota: {movie.vote_average}</Card.Text>
 									<Link to={'/movie/' + movie.id}>
-										<Button variant="outline-dark">Details</Button>
+										<Button variant="outline-light" size = "sm">Details</Button>
 									</Link>
 								</Card.Body>
 							</Card>
@@ -955,5 +839,7 @@ class SearchResults extends React.Component{
 			</div>;
 	}
 }
+
+/*--------------------------------------------------------------------------------------*/
 
 export default App;
