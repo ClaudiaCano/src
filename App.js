@@ -1,3 +1,9 @@
+/* IMPORTANT!!
+ * TO SEE THE PAGE IN THE CITMALUMNES SERVER (LINK PROVIDED IN FOLDER) YOU HAVE TO CLICK
+ * IN THE MOVIESEARCH LOGO (IN THE NAVBAR) TO LOAD THE MAIN PAGE.
+ * This is because of the Router format, which is designed for localhost (not for server).
+ */
+
 import React from 'react';
 import logo from './logo.svg';
 
